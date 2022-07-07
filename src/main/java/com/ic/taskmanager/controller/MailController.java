@@ -1,7 +1,7 @@
 package com.ic.taskmanager.controller;
 
+import com.ic.taskmanager.interfaces.UploadService;
 import com.ic.taskmanager.serializers.EmailRecipient;
-import com.ic.taskmanager.services.FileUploadService;
 import com.ic.taskmanager.services.MailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +21,14 @@ public class MailController {
     @Autowired
     private MailService mailService;
     @Autowired
-    private FileUploadService fileUploadService;
-
+    private UploadService uploadService;
 
     @PostMapping(path = "/send", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity sendMailTo(@Valid @ModelAttribute EmailRecipient recipient)
             throws AddressException, MessagingException, IllegalStateException, IOException {
         // this.mailService.sendTo(recipient.getEmail(), recipient.getSubject(),
         // recipient.getText());
-        this.fileUploadService.upload(recipient.getFile());
+        this.uploadService.save(recipient.getFile(), recipient.getEmail());
         return ResponseEntity.ok("OK");
     }
 }
