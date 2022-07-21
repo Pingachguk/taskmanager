@@ -1,6 +1,5 @@
 package com.ic.taskmanager.services;
 
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.ic.taskmanager.interfaces.Job;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/job")
 public class JobController {
-
     private JobService jobService;
 
     public JobController(JobService jobService) {
@@ -22,14 +21,18 @@ public class JobController {
     }
 
     @GetMapping(path = "/get-by-id/{id}")
-    public void getJobById(@PathVariable int id) {}
+    public void getJobById(@PathVariable int id) {
+    }
 
     @PostMapping(path = "/add")
-    public void addJob(RequestEntity request) {}
+    public void addJob(RequestEntity<?> request) {
+    }
 
     @PutMapping(path = "/edit/{id}")
-    public void editJob(RequestEntity request, @PathVariable int id) {}
+    public void editJob(RequestEntity<?> request, @PathVariable int id) {
+    }
 
     @PostMapping(path = "/delete/{id}")
-    public void deleteJob(@PathVariable int id) {}
+    public void deleteJob(@PathVariable int id) {
+    }
 }
