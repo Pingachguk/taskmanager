@@ -1,10 +1,16 @@
 package com.ic.taskmanager.services;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.springframework.stereotype.Service;
 
+import com.ic.taskmanager.dto.Mail;
+import com.ic.taskmanager.models.MailboxReader;
 import com.ic.taskmanager.models.MailboxSender;
 
 @Service
@@ -14,7 +20,13 @@ public class MailService {
         mailboxSender.send(address, subject, text);
     }
 
-    public void read() {
+    public List<Mail> getInboxMails() throws MessagingException, IOException {
+        MailboxReader mailboxReader = new MailboxReader();
+        return mailboxReader.getMails();
+    }
 
+    public Mail readMail(int mailNum) throws MessagingException, IOException {
+        MailboxReader mailboxReader = new MailboxReader();
+        return mailboxReader.readMail(mailNum);
     }
 }
