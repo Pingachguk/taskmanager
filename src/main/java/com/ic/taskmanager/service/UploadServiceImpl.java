@@ -1,4 +1,4 @@
-package com.ic.taskmanager.services;
+package com.ic.taskmanager.service;
 
 import java.io.IOException;
 import java.nio.file.Files;

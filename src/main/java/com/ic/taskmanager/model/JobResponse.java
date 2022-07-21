@@ -1,4 +1,4 @@
-package com.ic.taskmanager.models;
+package com.ic.taskmanager.model;
 
 import lombok.Data;
 import lombok.ToString;

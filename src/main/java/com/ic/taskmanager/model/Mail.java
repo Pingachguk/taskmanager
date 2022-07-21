@@ -1,4 +1,4 @@
-package com.ic.taskmanager.dto;
+package com.ic.taskmanager.model;
 
 import java.io.File;
 import java.util.Date;

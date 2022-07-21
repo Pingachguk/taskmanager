@@ -1,4 +1,4 @@
-package com.ic.taskmanager.services;
+package com.ic.taskmanager.service;
 
 import java.io.IOException;
 import java.util.List;
@@ -6,26 +6,27 @@ import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ic.taskmanager.dto.Mail;
-import com.ic.taskmanager.models.MailboxReader;
-import com.ic.taskmanager.models.MailboxSender;
+import com.ic.taskmanager.model.Mail;
 
 @Service
 public class MailService {
+    @Autowired
+    private MailboxReader mailboxReader;
+    @Autowired
+    private MailboxSender mailboxSender;
+
     public void sendTo(String address, String subject, String text) throws AddressException, MessagingException {
-        MailboxSender mailboxSender = new MailboxSender();
-        mailboxSender.send(address, subject, text);
+        this.mailboxSender.send(address, subject, text);
     }
 
     public List<Mail> getInboxMails() throws MessagingException, IOException {
-        MailboxReader mailboxReader = new MailboxReader();
-        return mailboxReader.getMails();
+        return this.mailboxReader.getMails();
     }
 
     public Mail readMail(int mailNum) throws MessagingException, IOException {
-        MailboxReader mailboxReader = new MailboxReader();
-        return mailboxReader.readMail(mailNum);
+        return this.mailboxReader.readMail(mailNum);
     }
 }

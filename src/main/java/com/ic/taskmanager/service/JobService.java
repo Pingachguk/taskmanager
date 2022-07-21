@@ -1,4 +1,4 @@
-package com.ic.taskmanager.services;
+package com.ic.taskmanager.service;
 
 import com.ic.taskmanager.interfaces.Job;
 import org.springframework.scheduling.annotation.EnableScheduling;

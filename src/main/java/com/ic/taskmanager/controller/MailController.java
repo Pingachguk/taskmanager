@@ -1,8 +1,8 @@
 package com.ic.taskmanager.controller;
 
-import com.ic.taskmanager.dto.Mail;
-import com.ic.taskmanager.serializers.EmailRecipient;
-import com.ic.taskmanager.services.MailService;
+import com.ic.taskmanager.form.EmailRecipient;
+import com.ic.taskmanager.model.Mail;
+import com.ic.taskmanager.service.MailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

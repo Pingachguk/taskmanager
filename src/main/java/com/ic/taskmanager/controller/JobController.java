@@ -1,7 +1,8 @@
 package com.ic.taskmanager.controller;
 
-import com.ic.taskmanager.models.JobResponse;
-import com.ic.taskmanager.services.JobService;
+import com.ic.taskmanager.model.JobResponse;
+import com.ic.taskmanager.service.JobService;
+
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

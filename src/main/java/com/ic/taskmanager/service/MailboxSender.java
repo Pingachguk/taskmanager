@@ -1,4 +1,4 @@
-package com.ic.taskmanager.models;
+package com.ic.taskmanager.service;
 
 import java.util.Properties;
 import javax.mail.Authenticator;

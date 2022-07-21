@@ -1,4 +1,4 @@
-package com.ic.taskmanager.models;
+package com.ic.taskmanager.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.Properties;
 import javax.mail.Session;
 import javax.mail.Store;
 
-import com.ic.taskmanager.dto.Mail;
+import com.ic.taskmanager.model.Mail;
 
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -24,6 +24,8 @@ public class MailboxReader {
 
     private String email = "work.account.test@yandex.ru";
 
+    private String folderName;
+
     private Properties props;
 
     private Session session;
@@ -32,12 +34,12 @@ public class MailboxReader {
 
     public MailboxReader() throws MessagingException {
         this.props = new Properties();
-        this.props.put("mail.pop3.port", this.port);
-        this.props.put("mail.pop3.host", this.host);
-        this.props.put("mail.pop3.user", this.email);
-        this.props.put("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        this.props.put("mail.pop3.socketFactory.fallback", "false");
-        this.props.put("mail.pop3.socketFactory.port", "995");
+        this.props.put(String.format("mail.%s.port", this.protocol), this.port);
+        this.props.put(String.format("mail.%s.host", this.protocol), this.host);
+        this.props.put(String.format("mail.%s.user", this.protocol), this.email);
+        this.props.put(String.format("mail.%s.socketFactory.class", this.protocol), "javax.net.ssl.SSLSocketFactory");
+        this.props.put(String.format("mail.%s.socketFactory.fallback", this.protocol), "false");
+        this.props.put(String.format("mail.%s.socketFactory.port", this.protocol), "995");
 
         this.session = Session.getDefaultInstance(this.props);
 
@@ -46,18 +48,18 @@ public class MailboxReader {
     }
 
     public List<Mail> getMails() throws MessagingException, IOException {
-        Folder inbox = store.getFolder("INBOX");
+        Folder inbox = store.getFolder(this.folderName);
         inbox.open(Folder.READ_ONLY);
         Message[] messages = inbox.getMessages();
 
-        List<Mail> mails= new ArrayList<>();
+        List<Mail> mails = new ArrayList<>();
         for (Message message : messages) {
             Mail mail = new Mail();
             mail.setFrom(message.getFrom()[0].toString());
             mail.setSubject(message.getSubject());
             mail.setDate(message.getSentDate());
             mail.setId(message.getMessageNumber());
-            
+
             mails.add(mail);
         }
 
@@ -66,7 +68,7 @@ public class MailboxReader {
 
     public Mail readMail(int mailNum) throws MessagingException, IOException {
         Folder inbox = store.getFolder("INBOX");
-        inbox.open(Folder.READ_ONLY); 
+        inbox.open(Folder.READ_ONLY);
         Message message = inbox.getMessage(mailNum);
 
         Mail mail = new Mail();
