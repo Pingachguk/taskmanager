@@ -11,6 +11,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
@@ -19,19 +20,19 @@ import javax.mail.Multipart;
 
 @Service
 public class MailboxSender {
-    private String protocol = "smtp";
+    @Value("${tm.smtp.host}")
+    private String host;
 
-    private int port = 465;
+    @Value("${tm.smtp.port}")
+    private int port;
 
-    private String host = "smtp.yandex.ru";
+    @Value("${tm.operator.password}")
+    private String password;
 
-    private String password = "rbgluhpkzftekmlt";
+    @Value("${tm.operator.email}")
+    private String email;
 
-    private String email = "work.account.test@yandex.ru";
-
-    private Properties props;
-
-    private Session session;
+    private final Properties props;
 
     public MailboxSender() {
         this.props = new Properties();
@@ -42,7 +43,7 @@ public class MailboxSender {
     }
 
     public void send(String address, String subject, String text) throws AddressException, MessagingException {
-        this.session = this.getSession();
+        Session session = this.getSession();
 
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(this.email));
