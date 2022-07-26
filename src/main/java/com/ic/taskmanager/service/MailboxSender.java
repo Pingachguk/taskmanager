@@ -10,13 +10,14 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+
+import org.springframework.stereotype.Service;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 
-import lombok.Data;
-
-@Data
+@Service
 public class MailboxSender {
     private String protocol = "smtp";
 
