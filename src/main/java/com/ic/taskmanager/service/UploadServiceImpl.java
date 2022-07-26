@@ -1,5 +1,6 @@
 package com.ic.taskmanager.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,10 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ic.taskmanager.interfaces.UploadService;
+import com.ic.taskmanager.interfaces.FileService;
 
 @Service
-public class UploadServiceImpl implements UploadService {
+public class UploadServiceImpl implements FileService {
     private final Path root = Paths.get("uploads");
 
     @PostConstruct
@@ -62,9 +63,8 @@ public class UploadServiceImpl implements UploadService {
     }
 
     @Override
-    public Resource load(String filename) {
-        // TODO: Загрузить файл с названием filename
-        return null;
+    public Path load(String filename) {
+        return Paths.get(this.root+"/"+filename);
     }
 
     @Override

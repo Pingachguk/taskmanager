@@ -1,6 +1,7 @@
 package com.ic.taskmanager.service;
 
 import java.util.Properties;
+import javax.annotation.PostConstruct;
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -32,9 +33,10 @@ public class MailboxSender {
     @Value("${tm.operator.email}")
     private String email;
 
-    private final Properties props;
+    private Properties props;
 
-    public MailboxSender() {
+    @PostConstruct
+    public void generateProps() {
         this.props = new Properties();
         this.props.put("mail.smtp.host", this.host);
         this.props.put("mail.smtp.auth", "true");

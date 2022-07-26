@@ -11,12 +11,10 @@ import javax.mail.internet.MimeUtility;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.ic.taskmanager.interfaces.UploadService;
+import com.ic.taskmanager.interfaces.FileService;
 import com.ic.taskmanager.model.Mail;
 
-import javax.mail.BodyPart;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -26,7 +24,7 @@ import javax.mail.Part;
 @Service
 public class MailboxReader {
     @Autowired
-    private UploadService uploadService;
+    private FileService fileService;
 
     private String protocol = "imap";
 

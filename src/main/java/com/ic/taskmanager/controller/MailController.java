@@ -22,12 +22,13 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/mail")
 public class MailController {
+    private final MailboxSender mailboxSender;
+    private final MailboxReader mailboxReader;
 
-    @Autowired
-    private MailboxSender mailboxSender;
-
-    @Autowired
-    private MailboxReader mailboxReader;
+    public MailController(MailboxSender mailboxSender, MailboxReader mailboxReader) {
+        this.mailboxSender = mailboxSender;
+        this.mailboxReader = mailboxReader;
+    }
 
     @RequestMapping(path = "/echo", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<Map<String, String>> echo() {
