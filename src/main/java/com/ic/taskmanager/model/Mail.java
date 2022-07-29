@@ -1,9 +1,14 @@
 package com.ic.taskmanager.model;
 
-import java.io.File;
 import java.util.Date;
+import java.util.List;
+
+import javax.mail.internet.MimeBodyPart;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.ToString.Exclude;
 
 @Data
 public class Mail {
@@ -17,5 +22,6 @@ public class Mail {
 
     private String text;
 
-    private File[] files;
+    @JsonIgnore
+    private List<MimeBodyPart> files;
 }

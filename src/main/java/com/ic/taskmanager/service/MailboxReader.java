@@ -9,23 +9,22 @@ import javax.mail.Store;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeUtility;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.ic.taskmanager.interfaces.FileService;
 import com.ic.taskmanager.model.Mail;
 
+import javax.annotation.PostConstruct;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.NoSuchProviderException;
 import javax.mail.Part;
 
 @Service
 public class MailboxReader {
-    @Autowired
-    private FileService fileService;
-
     private String protocol = "imap";
 
     private int port = 993;
@@ -42,7 +41,14 @@ public class MailboxReader {
 
     private Store store;
 
-    public MailboxReader() throws MessagingException {
+    private FileService fileService;
+
+    public MailboxReader(FileService fileService) throws MessagingException {
+        this.fileService = fileService;
+    }
+
+    @PostConstruct
+    public void setStore() throws NoSuchProviderException {
         this.props = new Properties();
         this.props.put(String.format("mail.%s.port", this.protocol), this.port);
         this.props.put(String.format("mail.%s.host", this.protocol), this.host);
@@ -87,7 +93,7 @@ public class MailboxReader {
 
         Mail mail = new Mail();
         mail.setId(message.getMessageNumber());
-        mail.setFrom(message.getFrom()[0].toString());
+        mail.setFrom(StringUtils.substringBetween(message.getFrom()[0].toString(), "<", ">"));
         mail.setSubject(message.getSubject());
         mail.setDate(message.getSentDate());
 
@@ -99,6 +105,8 @@ public class MailboxReader {
             this.readMultipart(mail, message);
         }
 
+        this.saveMailOnDisk(mail);
+
         this.store.close();
         return mail;
     }
@@ -106,6 +114,8 @@ public class MailboxReader {
     private void readMultipart(Mail mail, Message message) throws IOException, MessagingException {
         Multipart multipart = (Multipart) message.getContent();
         int countParts = multipart.getCount();
+
+        List<MimeBodyPart> files = new ArrayList<>();
         for (int i = 0; i < countParts; i++) {
             MimeBodyPart part = (MimeBodyPart) multipart.getBodyPart(i);
 
@@ -114,9 +124,22 @@ public class MailboxReader {
             }
 
             if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
-                String fileName = part.getFileName();
-                String saveFileName = MimeUtility.decodeText(fileName);
-                part.saveFile("uploads/"+saveFileName);
+                files.add(part);
+            }
+        }
+
+        mail.setFiles(files);
+    }
+
+    private void saveMailOnDisk(Mail mail) throws IOException {
+        // // Создание папки отправителя, если существует, то ничего не происходит
+        // this.fileService.createDirecotry(mail.getFrom());
+        // Создание папки с датой письма, если существует, то ничего не происходит
+        this.fileService.createDirecotry(mail.getFrom() + "/" + Long.toString(mail.getDate().getTime()));
+
+        if (mail.getFiles() != null) {
+            for (MimeBodyPart file : mail.getFiles()) {
+                this.fileService.save(file, mail.getFrom() + "/" + Long.toString(mail.getDate().getTime()));
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.ic.taskmanager.controller;
 
 import com.ic.taskmanager.interfaces.FileService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
